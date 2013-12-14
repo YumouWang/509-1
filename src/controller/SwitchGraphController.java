@@ -4,6 +4,9 @@ import java.util.Enumeration;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.JRadioButton;
+
+import dataset.ICommonProperties;
 
 import model.Model;
 import view.MainGUI;
@@ -29,24 +32,34 @@ public class SwitchGraphController extends BaseController{
 	void switchGraph(){
 		Enumeration<AbstractButton> enu = this.mainGUI.buttonGroup.getElements();
 		while(enu.hasMoreElements()){
-			/*
 			JRadioButton button = (JRadioButton)enu.nextElement();
 			if(button.isSelected()){
-				if(button == mainGUI.rdbtnCartesianPlot && !(model.getGraph() instanceof CartesianPlot)){
-					model.switchGraph(new CartesianPlot());
-					if(model.getDataset().getPoints().size() <= 1){
+				if(button == mainGUI.rdbtnCartesianPlot && !(ICommonProperties.cartesian.equals(model.graphName))){
+					model.graphName = ICommonProperties.cartesian;
+					if(model.getDataset().size() <= 1){
 						mainGUI.btnShowHideTrendLine.setEnabled(false);
 					}else{
 						mainGUI.btnShowHideTrendLine.setEnabled(true);
 					}
 					mainGUI.btnShowHideFormula.setEnabled(false);
-				}else if(button == mainGUI.rdbtnColumnChart && !(model.getGraph() instanceof ColumnChart)){
-					model.switchGraph(new ColumnChart());
+				}else if(button == mainGUI.rdbtnColumnChart && !(ICommonProperties.column.equals(model.graphName))){
+					model.graphName = ICommonProperties.column;
 					mainGUI.btnShowHideFormula.setEnabled(false);
 					mainGUI.btnShowHideTrendLine.setEnabled(false);
+				}else if(button == mainGUI.rdbtnHorizontalBarGraph && !(ICommonProperties.horizontalBarGraph.equals(model.graphName))){
+					model.graphName = ICommonProperties.horizontalBarGraph;
+					mainGUI.btnShowHideFormula.setEnabled(false);
+					mainGUI.btnShowHideTrendLine.setEnabled(false);
+				}else if(button == mainGUI.rdbtnMultiplelines && !(ICommonProperties.multipleLines.equals(model.graphName))){
+					model.graphName = ICommonProperties.multipleLines;
+					if(model.getDataset().size() <= 1){
+						mainGUI.btnShowHideTrendLine.setEnabled(false);
+					}else{
+						mainGUI.btnShowHideTrendLine.setEnabled(true);
+					}
+					mainGUI.btnShowHideFormula.setEnabled(false);
 				}
 			}
-			*/
 		}
 	}
 }

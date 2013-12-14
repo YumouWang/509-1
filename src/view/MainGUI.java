@@ -44,6 +44,8 @@ public class MainGUI extends JFrame {
 	public JButton btnShowHideFormula;
 	public JRadioButton rdbtnCartesianPlot;
 	public JRadioButton rdbtnColumnChart;
+	public JRadioButton rdbtnHorizontalBarGraph;
+	public JRadioButton rdbtnMultiplelines;
 	public JButton btnShowHideBackGroundLines;
 	public JButton btnShowhideAxisValues;
 	public JButton btnCreateNewDataset;
@@ -68,10 +70,16 @@ public class MainGUI extends JFrame {
 		rdbtnCartesianPlot.setSelected(true);
 		rdbtnColumnChart = new JRadioButton("Column Chart");
 		rdbtnColumnChart.setSelected(false);
+		rdbtnHorizontalBarGraph = new JRadioButton("Horizontal Bar Graph");
+		rdbtnHorizontalBarGraph.setSelected(false);
+		rdbtnMultiplelines = new JRadioButton("Multiple Lines");
+		rdbtnMultiplelines.setSelected(false);
 		
 		buttonGroup = new ButtonGroup();
 		buttonGroup.add(rdbtnCartesianPlot);
 		buttonGroup.add(rdbtnColumnChart);
+		buttonGroup.add(rdbtnHorizontalBarGraph);
+		buttonGroup.add(rdbtnMultiplelines);
 		
 		rdbtnCartesianPlot.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {				
@@ -84,7 +92,19 @@ public class MainGUI extends JFrame {
 				new SwitchGraphController(model, MainGUI.this).act();
 			}
 		});
+
+		rdbtnHorizontalBarGraph.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {				
+				new SwitchGraphController(model, MainGUI.this).act();
+			}
+		});
 		
+		rdbtnMultiplelines.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e) {
+				new SwitchGraphController(model, MainGUI.this).act();
+			}
+		});
+
 		JButton btnAddAPoint = new JButton("Add a Point");
 		btnAddAPoint.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e) {
@@ -199,23 +219,33 @@ public class MainGUI extends JFrame {
 		
 		scrollPane.setViewportView(list);
 		
+
+		
 		
 		GroupLayout gl_drawPanel = new GroupLayout(drawPanel);
 		gl_drawPanel.setHorizontalGroup(
 			gl_drawPanel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_drawPanel.createSequentialGroup()
-					.addContainerGap()
+				.addGroup(Alignment.TRAILING, gl_drawPanel.createSequentialGroup()
 					.addGroup(gl_drawPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(rdbtnCartesianPlot)
-						.addComponent(rdbtnColumnChart))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addGroup(gl_drawPanel.createParallelGroup(Alignment.LEADING, false)
-						.addComponent(btnShowHideTrendLine, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnShowhideAxisValues, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-					.addPreferredGap(ComponentPlacement.UNRELATED)
+						.addGroup(gl_drawPanel.createSequentialGroup()
+							.addContainerGap(41, Short.MAX_VALUE)
+							.addGroup(gl_drawPanel.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(btnShowHideTrendLine, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
+								.addComponent(btnShowhideAxisValues, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addGap(54))
+						.addGroup(gl_drawPanel.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(rdbtnCartesianPlot)
+							.addGap(18)
+							.addComponent(rdbtnColumnChart)
+							.addGap(22)))
 					.addGroup(gl_drawPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnShowHideBackGroundLines)
-						.addComponent(btnShowHideFormula))
+						.addGroup(gl_drawPanel.createSequentialGroup()
+							.addComponent(rdbtnHorizontalBarGraph)
+							.addGap(18)
+							.addComponent(rdbtnMultiplelines))
+						.addComponent(btnShowHideFormula)
+						.addComponent(btnShowHideBackGroundLines))
 					.addContainerGap())
 		);
 		gl_drawPanel.setVerticalGroup(
@@ -224,14 +254,18 @@ public class MainGUI extends JFrame {
 					.addGap(15)
 					.addGroup(gl_drawPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(rdbtnCartesianPlot)
+						.addComponent(rdbtnColumnChart)
+						.addComponent(rdbtnHorizontalBarGraph)
+						.addComponent(rdbtnMultiplelines))
+					.addGap(30)
+					.addGroup(gl_drawPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnShowhideAxisValues)
 						.addComponent(btnShowHideBackGroundLines))
-					.addGap(33)
+					.addGap(18)
 					.addGroup(gl_drawPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnShowHideTrendLine)
-						.addComponent(btnShowHideFormula)
-						.addComponent(rdbtnColumnChart))
-					.addContainerGap(104, Short.MAX_VALUE))
+						.addComponent(btnShowHideFormula))
+					.addContainerGap(47, Short.MAX_VALUE))
 		);
 		drawPanel.setLayout(gl_drawPanel);
 

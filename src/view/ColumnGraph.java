@@ -53,10 +53,10 @@ public class ColumnGraph implements IGraph {
 	}
 
 	public void draw(Graphics g, JPanel panel) {
-		drawColumnChartAxisLines(g, panel);
-		drawColumnChartStripes(g, panel);
-		drawColumnChartAxisLabel(g, panel);
-		drawColumnChartHorizontalLines(g, panel);
+		drawAxisLines(g, panel);
+		drawStripes(g, panel);
+		drawAxisLabel(g, panel);
+		drawHorizontalLines(g, panel);
 	}
 
 	public void setProperties(Properties p) {
@@ -81,7 +81,7 @@ public class ColumnGraph implements IGraph {
 		this.cursorUnit = 40;
 	}
 
-	void setColumnChartAxisBounds(double upperBound, double lowerBound,
+	void setAxisBounds(double upperBound, double lowerBound,
 			JPanel panel) {
 		this.maxXOnG = 0;
 		this.maxYOnG = 0;
@@ -145,7 +145,7 @@ public class ColumnGraph implements IGraph {
 		}
 	}
 
-	void drawColumnChartAxisLines(Graphics g, JPanel panel) {
+	void drawAxisLines(Graphics g, JPanel panel) {
 		g.setColor(new Color(0, 0, 0));
 		ArrayList<Double> xyBounds = new ArrayList<Double>();
 		xyBounds.add(this.iDataSet.getMaxX());
@@ -186,7 +186,7 @@ public class ColumnGraph implements IGraph {
 				panel.getWidth() - 1, this.originY);
 		g.drawLine(this.originX - 5, 5, this.originX, 0);
 		g.drawLine(this.originX + 5, 5, this.originX, 0);
-		setColumnChartAxisBounds(upperBound, lowerBound, panel);
+		setAxisBounds(upperBound, lowerBound, panel);
 		for (int i = 0; i <= (int) (this.maxXOnG / this.numericUnitX); i++) {
 			g.drawLine(this.originX + this.cursorUnit * i, this.originY - 5,
 					this.originX + this.cursorUnit * i, this.originY);
@@ -197,7 +197,7 @@ public class ColumnGraph implements IGraph {
 		}
 	}
 
-	void drawColumnChartStripes(Graphics g, JPanel panel) {
+	void drawStripes(Graphics g, JPanel panel) {
 		for (int i = 0; i < this.iDataSet.size(); i++) {
 			int a = i + 1;
 			int centerXOfStripes = (int) (this.originX + (a / this.numericUnitX)
@@ -215,7 +215,7 @@ public class ColumnGraph implements IGraph {
 		}
 	}
 
-	void drawColumnChartAxisLabel(Graphics g, JPanel panel) {
+	void drawAxisLabel(Graphics g, JPanel panel) {
 		g.setColor(new Color(0, 0, 0));
 		if (this.isXAxisLabelVisible) {
 			String unitX = Double.toString(this.numericUnitX);
@@ -242,7 +242,7 @@ public class ColumnGraph implements IGraph {
 		}
 	}
 
-	void drawColumnChartHorizontalLines(Graphics g, JPanel panel) {
+	void drawHorizontalLines(Graphics g, JPanel panel) {
 		g.setColor(new Color(0, 0, 0, 20));
 		if (this.isHorizontalLinesVisible) {
 			for (int i = (int) (this.minYOnG / this.numericUnitY); i <= (int) (this.maxYOnG / this.numericUnitY); i++) {

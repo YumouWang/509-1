@@ -30,7 +30,7 @@ public class Model {
 			File f = new File("./application.properties");
 			try{
 				model.properties.load(new FileInputStream(f));
-				model.graphName = model.properties.getProperty(ICommonProperties.cartesian);
+				model.graphName = ICommonProperties.cartesian;
 			}catch(Exception e){
 				e.printStackTrace();
 			}

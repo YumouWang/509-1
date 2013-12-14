@@ -5,6 +5,13 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.PriorityQueue;
 import java.util.Properties;
 
 import javax.swing.JPanel;
@@ -13,7 +20,8 @@ import dataset.ICommonProperties;
 import dataset.IDataSet;
 import dataset.IGraph;
 
-public class CartesianPlot implements IGraph {
+public class MultipleLines implements IGraph {
+
 	IDataSet iDataSet;
 	String equation;
 	double slope;
@@ -35,8 +43,8 @@ public class CartesianPlot implements IGraph {
 	boolean isHorizontalLinesVisible;
 	boolean isTrendLineVisible;
 	boolean isTrendLineEquationVisible;
-
-	public CartesianPlot() {
+	
+	public MultipleLines(){
 		this.originX = 0;
 		this.originY = 0;
 		this.numericUnitX = 1;
@@ -55,7 +63,7 @@ public class CartesianPlot implements IGraph {
 	public void draw(Graphics g, JPanel panel) {
 		reset();
 		drawAxisLines(g, panel);
-		drawPoints(g, panel);
+		drawPointsAndLines(g, panel);
 		drawAxisLabel(g, panel);
 		drawHorizontalLines(g, panel);
 		if (this.iDataSet.size() >= 2) {
@@ -250,14 +258,42 @@ public class CartesianPlot implements IGraph {
 		}
 	}
 
-	void drawPoints(Graphics g, JPanel panel) {
+	void drawPointsAndLines(Graphics g, JPanel panel) {
 		g.setColor(new Color(255, 0, 0));
+		ArrayList<ArrayList<Double>> list = new ArrayList<ArrayList<Double>>();
+
 		for (int i = 0; i < this.iDataSet.size(); i++) {
-			int centerX = (int) (this.originX + (this.iDataSet.getCoordinate(i, 0) / this.numericUnitX)
+			ArrayList<Double> temp = new ArrayList<Double>();
+			temp.add(this.iDataSet.getCoordinate(i, 0));
+			temp.add(this.iDataSet.getCoordinate(i, 1));
+			list.add(temp);
+		}
+		Comparator<ArrayList<Double>> comp = new Comparator<ArrayList<Double>>() {
+			public int compare(ArrayList<Double> a1, ArrayList<Double> a2) {
+				return a1.get(0).compareTo(a2.get(0));
+			}
+		};
+		Collections.sort(list, comp);
+		Iterator<ArrayList<Double>> iter = list.iterator();
+		boolean isFirst = true;
+		int prevCenterX = 0;
+		int prevCenterY = 0;
+		while (iter.hasNext()) {
+			ArrayList<Double> dList = iter.next();
+			int centerX = (int) (this.originX + (dList.get(0) / this.numericUnitX)
 					* this.cursorUnit);
-			int centerY = (int) (this.originY - (this.iDataSet.getCoordinate(i, 1) / this.numericUnitY)
+			int centerY = (int) (this.originY - (dList.get(1) / this.numericUnitY)
 					* this.cursorUnit);
 			g.drawOval(centerX - 2, centerY - 2, 4, 4);
+			if (isFirst) {
+				isFirst = false;
+				prevCenterX = centerX;
+				prevCenterY = centerY;
+				continue;
+			}
+			g.drawLine(prevCenterX, prevCenterY, centerX, centerY);
+			prevCenterX = centerX;
+			prevCenterY = centerY;
 		}
 	}
 
@@ -374,4 +410,5 @@ public class CartesianPlot implements IGraph {
 		}
 	}
 
+	
 }

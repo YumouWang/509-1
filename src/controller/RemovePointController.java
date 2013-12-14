@@ -29,7 +29,7 @@ public class RemovePointController extends BaseController{
 			return false;
 		}
 		
-		if(model.properties.get(ICommonProperties.cartesian).equals(model.graphName)){
+		if(ICommonProperties.cartesian.equals(model.graphName)){
 			if(model.getDataset().size() == 1){
 				model.properties.setProperty(ICommonProperties.trendLineVisible, "false");
 				model.properties.setProperty(ICommonProperties.trendLineEquationVisible, "false");
