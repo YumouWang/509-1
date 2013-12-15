@@ -4,11 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
 
-import view.CartesianPlot;
-
 import dataset.ICommonProperties;
 import dataset.IDataSet;
-import dataset.IGraph;
 
 public class Model {
 	
@@ -20,7 +17,6 @@ public class Model {
 	
 	private Model(){
 	}
-	
 	
 	public static Model getInstance(){
 		if(model == null){

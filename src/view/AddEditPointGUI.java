@@ -28,8 +28,8 @@ public class AddEditPointGUI extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	Model model;
 	MainGUI mainGUI;
-	DefaultListModel listModel;
-	JList list;
+	DefaultListModel<String> listModel;
+	JList<String> list;
 	JTextField textField_x;
 	JTextField textField_y;
 	JLabel warningLabel;

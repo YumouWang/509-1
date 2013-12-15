@@ -23,7 +23,7 @@ public class RemovePointController extends BaseController{
 			return false;
 		boolean removeResult = ((Dataset) model.getDataset()).removePoint(mainGUI.list.getSelectedIndex());
 		if(removeResult){ // remove the selected point in JList
-			DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
+			DefaultListModel<String> listModel = (DefaultListModel<String>)mainGUI.list.getModel();
 			listModel.removeElementAt(mainGUI.list.getSelectedIndex());
 		}else{
 			return false;

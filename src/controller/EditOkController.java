@@ -3,7 +3,6 @@ package controller;
 import javax.swing.DefaultListModel;
 
 import dataset.IDataSet;
-
 import model.Dataset;
 import model.Model;
 import model.Point;
@@ -36,7 +35,7 @@ public class EditOkController extends BaseController{
 		IDataSet iDataSet = model.getDataset();
 		boolean updatePointResult = ((Dataset)iDataSet).updatePoint(mainGUI.list.getSelectedIndex(), p);
 		if(updatePointResult){
-			DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
+			DefaultListModel<String> listModel = (DefaultListModel<String>)mainGUI.list.getModel();
 			listModel.set(mainGUI.list.getSelectedIndex(), p.toString());
 			addEditPointGUI.dispose();
 		}

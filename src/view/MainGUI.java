@@ -38,7 +38,7 @@ public class MainGUI extends JFrame {
 	// keep track of model
 	Model model;
 	public GraphPanel graphPanel;
-	public JList list;
+	public JList<String> list;
 	public ButtonGroup buttonGroup;
 	public JButton btnShowHideTrendLine ;
 	public JButton btnShowHideFormula;
@@ -63,7 +63,7 @@ public class MainGUI extends JFrame {
 		
 		JPanel drawPanel = new JPanel();
 		
-		list = new JList(new DefaultListModel());
+		list = new JList<String>(new DefaultListModel<String>());
 		graphPanel = new GraphPanel(model);
 		
 		rdbtnCartesianPlot = new JRadioButton("Cartesian Plot");

@@ -36,7 +36,7 @@ public class AddOkController extends BaseController{
 		IDataSet iDataSet = model.getDataset();
 		boolean addPointResult = ((Dataset)iDataSet).addPoint(p);
 		if(addPointResult){
-			DefaultListModel listModel = (DefaultListModel)this.mainGUI.list.getModel();
+			DefaultListModel<String> listModel = (DefaultListModel<String>)this.mainGUI.list.getModel();
 			listModel.addElement(p.toString());
 			addEditPointGUI.dispose();
 		}else{

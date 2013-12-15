@@ -1,17 +1,10 @@
 package view;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map.Entry;
-import java.util.PriorityQueue;
 import java.util.Properties;
 
 import javax.swing.JPanel;
@@ -21,17 +14,14 @@ import dataset.IDataSet;
 import dataset.IGraph;
 
 public class MultipleLines implements IGraph {
-
 	IDataSet iDataSet;
-	String equation;
-	double slope;
-	double intercept;
 
 	int originX;
 	int originY;
 	double numericUnitX;
 	double numericUnitY;
-	int cursorUnit;
+	int xCursorUnit;
+	int yCursorUnit;
 	double maxXOnG;
 	double minXOnG;
 	double maxYOnG;
@@ -41,19 +31,8 @@ public class MultipleLines implements IGraph {
 	boolean isXAxisLabelVisible;
 	boolean isYAxisLabelVisible;
 	boolean isHorizontalLinesVisible;
-	boolean isTrendLineVisible;
-	boolean isTrendLineEquationVisible;
-	
-	public MultipleLines(){
-		this.originX = 0;
-		this.originY = 0;
-		this.numericUnitX = 1;
-		this.numericUnitY = 1;
-		this.maxXOnG = 0;
-		this.maxYOnG = 0;
-		this.minXOnG = 0;
-		this.minYOnG = 0;
-		this.cursorUnit = 40;
+
+	public MultipleLines() {
 	}
 
 	public void setDataSet(IDataSet ds) {
@@ -61,15 +40,11 @@ public class MultipleLines implements IGraph {
 	}
 
 	public void draw(Graphics g, JPanel panel) {
-		reset();
+		reset(panel);
 		drawAxisLines(g, panel);
 		drawPointsAndLines(g, panel);
 		drawAxisLabel(g, panel);
 		drawHorizontalLines(g, panel);
-		if (this.iDataSet.size() >= 2) {
-			calculateTrendLineEquation();
-			drawTrendLineAndFormula(g, panel);
-		}
 	}
 
 	public void setProperties(Properties p) {
@@ -80,13 +55,9 @@ public class MultipleLines implements IGraph {
 				.getProperty(ICommonProperties.yAxisLabel));
 		this.isHorizontalLinesVisible = Boolean.parseBoolean(p
 				.getProperty(ICommonProperties.horizontalLines));
-		this.isTrendLineVisible = Boolean.parseBoolean(p
-				.getProperty(ICommonProperties.trendLineVisible));
-		this.isTrendLineEquationVisible = Boolean.parseBoolean(p
-				.getProperty(ICommonProperties.trendLineEquationVisible));
 	}
 
-	void reset() {
+	void reset(JPanel panel) {
 		this.originX = 0;
 		this.originY = 0;
 		this.numericUnitX = 1;
@@ -95,232 +66,188 @@ public class MultipleLines implements IGraph {
 		this.maxYOnG = 0;
 		this.minXOnG = 0;
 		this.minYOnG = 0;
-		this.cursorUnit = 40;
+		this.xCursorUnit = (int) Math.round(panel.getWidth() * 0.08);
+		this.yCursorUnit = (int) Math.round(panel.getHeight() * 0.08);
 	}
 
-	void calculateTrendLineEquation() {
-		int size = this.iDataSet.size();
-		double aveX = 0;
-		double aveY = 0;
-		for (int i = 0; i < size; i++) {
-			aveX += iDataSet.getCoordinate(i, 0) / size;
-			aveY += iDataSet.getCoordinate(i, 1) / size;
-		}
-		double aveDXDY = 0;
-		double deviation = 0;
-		for (int i = 0; i < size; i++) {
-			double x = iDataSet.getCoordinate(i, 0);
-			double y = iDataSet.getCoordinate(i, 1);
-			aveDXDY += ((x - aveX) * (y - aveY)) / size;
-			deviation += Math.pow(x - aveX, 2) / size;
-		}
-		this.slope = aveDXDY / deviation;
-		this.intercept = aveY - this.slope * aveX;
-		this.equation = new String("y = ");
-		if (this.slope != 0) {
-			this.equation += this.slope + " * x";
-		}
-		if (this.intercept > 0) {
-			if (this.slope != 0) {
-				this.equation += " + ";
-			}
-			this.equation += Double.toString(this.intercept);
-		} else if (this.intercept < 0) {
-			this.equation += " - " + Math.abs(this.intercept);
-		}
-	}
-
-	void setAxisBounds(JPanel panel) {
+	void setAxisBounds(double upperBound, double lowerBound, JPanel panel) {
 		this.maxXOnG = 0;
 		this.maxYOnG = 0;
-		this.minXOnG = 0;
 		this.minYOnG = 0;
 		if (this.iDataSet.size() > 0) {
-			int i = 1;
-			double bound;
-			double rX;
-			if (this.iDataSet.getMaxX() != 0 || this.iDataSet.getMinX() != 0) {
-				if (Math.abs(this.iDataSet.getMaxX()) > Math.abs(this.iDataSet
-						.getMinX())) {
-					rX = Math.abs(this.iDataSet.getMaxX());
-				} else {
-					rX = Math.abs(this.iDataSet.getMinX());
+			double rX = this.iDataSet.size();
+			if (rX > 10) {
+				double bound = 0;
+				int i = 2;
+				while (rX >= Math.pow(10, i)) {
+					i++;
 				}
-				bound = 0;
-				if (rX > 10) {
-					while (rX >= Math.pow(10, i)) {
-						i++;
-					}
-					bound = Math.pow(10, i);
-				} else {
-					while (rX < Math.pow(10, i)) {
-						i--;
-					}
-					bound = Math.pow(10, i);
-				}
+				bound = Math.pow(10, i - 1);
 				for (int j = 2; j <= 10; j++) {
 					if (j * bound > rX) {
-						this.numericUnitX = (j - 1) * bound / 5;
+						this.numericUnitX = j * bound / 10;
 						break;
 					}
 				}
 			}
 			double rY;
-			if (this.iDataSet.getMaxY() != 0 || this.iDataSet.getMinY() != 0) {
-
-				if (Math.abs(this.iDataSet.getMaxY()) > Math.abs(this.iDataSet
-						.getMinY())) {
-					rY = Math.abs(this.iDataSet.getMaxY());
+			if (upperBound != 0 || lowerBound != 0) {
+				if (lowerBound > 0) {
+					rY = Math.abs(upperBound);
 				} else {
-					rY = Math.abs(this.iDataSet.getMinY());
-				}
-				i = 1;
-				if (rY >= 10) {
-					while (rY >= Math.pow(10, i)) {
-						i++;
-					}
-					bound = Math.pow(10, i);
-				} else {
-					while (rY <= Math.pow(10, i)) {
-						i--;
-					}
-					bound = Math.pow(10, i);
-				}
-				for (int j = 2; j <= 10; j++) {
-					if (j * bound > rY) {
-						this.numericUnitY = (j - 1) * bound / 5;
-						break;
+					if (upperBound < 0) {
+						rY = Math.abs(lowerBound);
+					} else {
+						rY = upperBound - lowerBound;
 					}
 				}
+				this.numericUnitY = rY / 10;
+				this.numericUnitY = this.numericUnitY
+						* Math.pow(10, Double.toString(rY).length() - 1
+								- (Double.toString(rY).indexOf(".")));
+				this.numericUnitY += 0.5d;
+				this.numericUnitY = (long) this.numericUnitY;
+				this.numericUnitY = this.numericUnitY
+						/ Math.pow(10d, Double.toString(rY).length() - 1
+								- (Double.toString(rY).indexOf(".")));
 			}
 		} else {
 			this.numericUnitX = 1;
 			this.numericUnitY = 1;
 		}
-		for (int i = this.originX + this.cursorUnit; i < panel.getWidth() - 20; i += this.cursorUnit) {
+		for (int i = this.originX + this.xCursorUnit; i < panel.getWidth() - 5; i += this.xCursorUnit) {
 			this.maxXOnG += this.numericUnitX;
 		}
-		for (int i = originX - cursorUnit; i > 20; i -= this.cursorUnit) {
-			this.minXOnG -= this.numericUnitX;
-		}
-		for (int i = originY - cursorUnit; i > 20; i -= this.cursorUnit) {
+		for (int i = this.originY - this.yCursorUnit; i >= 5; i -= this.yCursorUnit) {
 			this.maxYOnG += this.numericUnitY;
 		}
-		for (int i = originY + cursorUnit; i < panel.getHeight() - 20; i += this.cursorUnit) {
+		for (int i = this.originY + this.yCursorUnit; i < panel.getHeight(); i += this.yCursorUnit) {
 			this.minYOnG -= this.numericUnitY;
 		}
 	}
 
 	void drawAxisLines(Graphics g, JPanel panel) {
 		g.setColor(new Color(0, 0, 0));
-		double maxX = this.iDataSet.getMaxX();
-		double maxY = this.iDataSet.getMaxY();
-		double minX = this.iDataSet.getMinX();
-		double minY = this.iDataSet.getMinY();
-		if (this.iDataSet.size() == 0) {
-			this.originX = panel.getWidth() / 2;
-			this.originY = panel.getHeight() / 2;
-		} else {
-			if (minX >= 0) {
-				this.originX = 40;
-			} else if (maxX < 0) {
-				this.originX = panel.getWidth() - 41;
-			} else {
-				this.originX = (int) (40 + (panel.getWidth() - 80)
-						* (-minX / (maxX - minX)));
+		ArrayList<Double> xyBounds = new ArrayList<Double>();
+		xyBounds.add(this.iDataSet.getMaxX());
+		xyBounds.add(this.iDataSet.getMaxY());
+		xyBounds.add(this.iDataSet.getMinX());
+		xyBounds.add(this.iDataSet.getMinY());
+		double upperBound = -Double.MAX_VALUE;
+		double lowerBound = Double.MAX_VALUE;
+		Iterator<Double> iter = xyBounds.iterator();
+		while (iter.hasNext()) {
+			double temp = iter.next();
+			if (temp > upperBound) {
+				upperBound = temp;
 			}
-			if (minY >= 0) {
-				this.originY = panel.getHeight() - 41;
-			} else if (maxY < 0) {
-				this.originY = 40;
+			if (temp < lowerBound) {
+				lowerBound = temp;
+			}
+		}
+		this.originX = (int) Math.round(panel.getWidth() * 0.07);
+		int vLimit = (int) Math.round(panel.getHeight() * 0.07);
+		if (this.iDataSet.size() == 0) {
+			this.originY = Math.round(panel.getHeight() / 2);
+		} else {
+			if (lowerBound >= 0) {
+				this.originY = panel.getHeight() - vLimit - 1;
 			} else {
-				this.originY = (int) (40 + (panel.getHeight() - 80)
-						* (maxY / (maxY - minY)));
+				if (upperBound <= 0) {
+					this.originY = vLimit;
+				} else {
+					this.originY = (int) Math.round(vLimit
+							+ (panel.getHeight() - 2 * vLimit)
+							* (upperBound / (upperBound - lowerBound)));
+				}
 			}
 		}
 
 		g.drawLine(this.originX, 0, this.originX, panel.getHeight());
 		g.drawLine(0, this.originY, panel.getWidth(), this.originY);
-		g.drawLine(panel.getWidth() - 5, this.originY - 5,
+		g.drawLine(panel.getWidth() - 5, this.originY - 4,
 				panel.getWidth() - 1, this.originY);
-		g.drawLine(panel.getWidth() - 5, this.originY + 5,
+		g.drawLine(panel.getWidth() - 5, this.originY + 4,
 				panel.getWidth() - 1, this.originY);
-		g.drawLine(this.originX - 5, 5, this.originX, 0);
-		g.drawLine(this.originX + 5, 5, this.originX, 0);
-		setAxisBounds(panel);
-		for (int i = (int) (this.minXOnG / this.numericUnitX); i <= (int) (this.maxXOnG / this.numericUnitX); i++) {
-			g.drawLine(this.originX + this.cursorUnit * i, this.originY - 5,
-					this.originX + this.cursorUnit * i, this.originY);
+		g.drawLine(this.originX - 4, 4, this.originX, 0);
+		g.drawLine(this.originX + 4, 4, this.originX, 0);
+		setAxisBounds(upperBound, lowerBound, panel);
+		for (int i = 0; i <= (int) Math.round(this.maxXOnG / this.numericUnitX); i++) {
+			g.drawLine(this.originX + this.xCursorUnit * i, this.originY - 4,
+					this.originX + this.xCursorUnit * i, this.originY);
 		}
-		for (int i = (int) (this.minYOnG / this.numericUnitY); i <= (int) (this.maxYOnG / this.numericUnitY); i++) {
-			g.drawLine(this.originX, this.originY - this.cursorUnit * i,
-					this.originX + 5, this.originY - this.cursorUnit * i);
+		for (int i = (int) Math.round(this.minYOnG / this.numericUnitY); i <= (int) Math
+				.round(this.maxYOnG / this.numericUnitY); i++) {
+			g.drawLine(this.originX, this.originY - this.yCursorUnit * i,
+					this.originX + 4, this.originY - this.yCursorUnit * i);
 		}
 	}
 
 	void drawPointsAndLines(Graphics g, JPanel panel) {
-		g.setColor(new Color(255, 0, 0));
-		ArrayList<ArrayList<Double>> list = new ArrayList<ArrayList<Double>>();
+		int prevCenterXOfPoints = 0;
+		int prevcenterYOfXPoint = 0;
+		int prevcenterYOfYPoint = 0;
 
 		for (int i = 0; i < this.iDataSet.size(); i++) {
-			ArrayList<Double> temp = new ArrayList<Double>();
-			temp.add(this.iDataSet.getCoordinate(i, 0));
-			temp.add(this.iDataSet.getCoordinate(i, 1));
-			list.add(temp);
-		}
-		Comparator<ArrayList<Double>> comp = new Comparator<ArrayList<Double>>() {
-			public int compare(ArrayList<Double> a1, ArrayList<Double> a2) {
-				return a1.get(0).compareTo(a2.get(0));
+			int a = i + 1;
+			int centerXOfPoints = (int) Math.round(this.originX
+					+ (a / this.numericUnitX) * this.xCursorUnit);
+			int centerYOfXPoint = (int) (this.originY - (this.iDataSet
+					.getCoordinate(i, 0) / this.numericUnitY)
+					* this.yCursorUnit);
+			int centerYOfYPoint = (int) (this.originY - (this.iDataSet
+					.getCoordinate(i, 1) / this.numericUnitY)
+					* this.yCursorUnit);
+			g.setColor(new Color(0, 0, 255));
+			g.drawOval(centerXOfPoints - 2, centerYOfXPoint - 2, 4, 4);
+			if (i > 0) {
+				g.drawLine(prevCenterXOfPoints, prevcenterYOfXPoint,
+						centerXOfPoints, centerYOfXPoint);
 			}
-		};
-		Collections.sort(list, comp);
-		Iterator<ArrayList<Double>> iter = list.iterator();
-		boolean isFirst = true;
-		int prevCenterX = 0;
-		int prevCenterY = 0;
-		while (iter.hasNext()) {
-			ArrayList<Double> dList = iter.next();
-			int centerX = (int) (this.originX + (dList.get(0) / this.numericUnitX)
-					* this.cursorUnit);
-			int centerY = (int) (this.originY - (dList.get(1) / this.numericUnitY)
-					* this.cursorUnit);
-			g.drawOval(centerX - 2, centerY - 2, 4, 4);
-			if (isFirst) {
-				isFirst = false;
-				prevCenterX = centerX;
-				prevCenterY = centerY;
-				continue;
+			g.setColor(new Color(255, 0, 0));
+			g.drawOval(centerXOfPoints - 2, centerYOfYPoint - 2, 4, 4);
+			if (i > 0) {
+				g.drawLine(prevCenterXOfPoints, prevcenterYOfYPoint,
+						centerXOfPoints, centerYOfYPoint);
 			}
-			g.drawLine(prevCenterX, prevCenterY, centerX, centerY);
-			prevCenterX = centerX;
-			prevCenterY = centerY;
+			prevCenterXOfPoints = centerXOfPoints;
+			prevcenterYOfXPoint = centerYOfXPoint;
+			prevcenterYOfYPoint = centerYOfYPoint;
 		}
 	}
 
 	void drawAxisLabel(Graphics g, JPanel panel) {
 		g.setColor(new Color(0, 0, 0));
 		if (this.isXAxisLabelVisible) {
-			String unitX = Double.toString(this.numericUnitX);
-			for (int i = (int) (this.minXOnG / this.numericUnitX); i <= (int) (this.maxXOnG / this.numericUnitX); i++) {
-				NumberFormat nf = NumberFormat.getNumberInstance();
-				nf.setMaximumFractionDigits(unitX.length() - 1
-						- unitX.indexOf("."));
-				String s = nf.format(i * this.numericUnitX);
-				g.drawString(s, this.originX + this.cursorUnit * i,
+			for (int i = 0; i <= Math.round(this.maxXOnG / this.numericUnitX); i++) {
+				String s = Integer.toString((int) (i * this.numericUnitX));
+				g.drawString(s, this.originX + this.xCursorUnit * i,
 						this.originY + 10);
 			}
-
 		}
 		if (this.isYAxisLabelVisible) {
-			String unitY = Double.toString(this.numericUnitY);
 			FontMetrics fm = g.getFontMetrics();
-			for (int i = (int) (this.minYOnG / this.numericUnitY); i <= (int) (this.maxYOnG / this.numericUnitY); i++) {
-				NumberFormat nf = NumberFormat.getNumberInstance();
-				nf.setMaximumFractionDigits(unitY.length() - 1
-						- unitY.indexOf("."));
-				String s = nf.format(i * this.numericUnitY);
+			int dLength = Double.toString(this.numericUnitY).length() - 1
+					- Double.toString(this.numericUnitY).indexOf(".");
+			for (int i = (int) Math.round(this.minYOnG / this.numericUnitY); i <= Math
+					.round(this.maxYOnG / this.numericUnitY); i++) {
+				double numberToWrite = i * this.numericUnitY;
+				String s;
+				if (numberToWrite % 1 != 0) {
+					numberToWrite = numberToWrite * Math.pow(10, dLength);
+					if (numberToWrite >= 0) {
+						numberToWrite += 0.5;
+					} else {
+						numberToWrite -= 0.5;
+					}
+					numberToWrite = (long) numberToWrite;
+					numberToWrite = numberToWrite / Math.pow(10d, dLength);
+					s = Double.toString(numberToWrite);
+				} else {
+					s = Integer.toString((int) numberToWrite);
+				}
 				g.drawString(s, this.originX - fm.stringWidth(s) - 2,
-						this.originY - this.cursorUnit * i);
+						this.originY - this.yCursorUnit * i);
 			}
 		}
 	}
@@ -328,87 +255,11 @@ public class MultipleLines implements IGraph {
 	void drawHorizontalLines(Graphics g, JPanel panel) {
 		g.setColor(new Color(0, 0, 0, 20));
 		if (this.isHorizontalLinesVisible) {
-			for (int i = (int) (this.minYOnG / this.numericUnitY); i <= (int) (this.maxYOnG / this.numericUnitY); i++) {
-				g.drawLine(0, this.originY - this.cursorUnit * i, panel.getWidth(),
-						this.originY - this.cursorUnit * i);
+			for (int i = (int) Math.round(this.minYOnG / this.numericUnitY); i <= Math
+					.round(this.maxYOnG / this.numericUnitY); i++) {
+				g.drawLine(0, this.originY - this.yCursorUnit * i,
+						panel.getWidth(), this.originY - this.yCursorUnit * i);
 			}
 		}
 	}
-
-	void drawTrendLineAndFormula(Graphics g, JPanel panel) {
-		if (this.isTrendLineVisible) {
-			if (Double.isNaN(this.slope)) {
-				Font font = g.getFont();
-				font.deriveFont(20);
-				g.setFont(font);
-				g.setColor(new Color(255, 0, 0));
-				g.drawString("The slope is Not a Number", 100, 100);
-			} else {
-				g.setColor(new Color(0, 0, 255, 20));
-				double numericLeftY = this.intercept
-						- (this.originX / (this.cursorUnit / this.numericUnitX))
-						* this.slope;
-				int leftYOnG = (int) (this.originY - (numericLeftY / this.numericUnitY)
-						* this.cursorUnit);
-				double numericRightY = this.intercept
-						+ ((panel.getWidth() - 1 - this.originX) / (this.cursorUnit / this.numericUnitX))
-						* this.slope;
-				int rightYOnG = (int) (this.originY - (numericRightY / this.numericUnitY)
-						* this.cursorUnit);
-				g.drawLine(0, leftYOnG, panel.getWidth() - 1, rightYOnG);
-				if (this.isTrendLineEquationVisible) {
-					g.setColor(new Color(0, 0, 255, 200));
-					FontMetrics fm = g.getFontMetrics();
-					int rightmostVisibleXOnTrendLine;
-					int xOfString;
-					int yOfString;
-					if (rightYOnG >= 0 && rightYOnG < panel.getHeight()) {
-						rightmostVisibleXOnTrendLine = panel.getWidth() - 1;
-						xOfString = rightmostVisibleXOnTrendLine
-								- fm.stringWidth(this.equation) - 2;
-						yOfString = (int) (rightYOnG - (fm
-								.stringWidth(this.equation) + 2)
-								* ((rightYOnG - leftYOnG) / (double) panel
-										.getWidth()));
-					} else {
-						if (this.slope > 0) {
-							rightmostVisibleXOnTrendLine = (int) (panel
-									.getWidth() * ((leftYOnG) / (double) (leftYOnG - rightYOnG)));
-						} else {
-							rightmostVisibleXOnTrendLine = (int) (panel
-									.getWidth() * ((panel.getHeight() - 1 - leftYOnG) / (double) (rightYOnG - leftYOnG)));
-						}
-					}
-					if (rightmostVisibleXOnTrendLine < panel.getWidth()
-							- fm.stringWidth(this.equation) - 2) {
-						xOfString = rightmostVisibleXOnTrendLine;
-					} else {
-						xOfString = panel.getWidth()
-								- fm.stringWidth(this.equation) - 2;
-					}
-					yOfString = (int) (rightYOnG - (panel.getWidth() - xOfString)
-							* ((rightYOnG - leftYOnG) / (double) (panel
-									.getWidth())));
-					if (this.slope > 0) {
-						if (yOfString > panel.getHeight()) {
-							g.drawString(this.equation, xOfString,
-									panel.getHeight() - 1);
-						} else {
-							g.drawString(this.equation, xOfString,
-									yOfString + 10);
-						}
-					} else {
-						if (yOfString < 0) {
-							g.drawString(this.equation, xOfString, 10);
-						} else {
-							g.drawString(this.equation, xOfString,
-									yOfString - 10);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	
 }
