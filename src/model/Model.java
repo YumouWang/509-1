@@ -22,7 +22,7 @@ public class Model {
 		if(model == null){
 			model = new Model();
 			model.dataset = new Dataset();
-			model.properties = new Properties();
+			model.properties = ApplicationProperties.getInstance().properties;
 			File f = new File("./application.properties");
 			try{
 				model.properties.load(new FileInputStream(f));

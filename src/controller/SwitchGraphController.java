@@ -52,12 +52,8 @@ public class SwitchGraphController extends BaseController{
 					mainGUI.btnShowHideTrendLine.setEnabled(false);
 				}else if(button == mainGUI.rdbtnMultiplelines && !(ICommonProperties.multipleLines.equals(model.graphName))){
 					model.graphName = ICommonProperties.multipleLines;
-					if(model.getDataset().size() <= 1){
-						mainGUI.btnShowHideTrendLine.setEnabled(false);
-					}else{
-						mainGUI.btnShowHideTrendLine.setEnabled(true);
-					}
 					mainGUI.btnShowHideFormula.setEnabled(false);
+					mainGUI.btnShowHideTrendLine.setEnabled(false);
 				}
 			}
 		}
