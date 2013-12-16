@@ -18,7 +18,7 @@ public class CreateNewDatasetController extends BaseController {
 	@Override
 	public boolean act() {
 		model.setDataset(new Dataset());
-		DefaultListModel<String> listModel = (DefaultListModel<String>)mainGUI.list.getModel();
+		DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
 		listModel.removeAllElements();
 		mainGUI.btnShowHideTrendLine.setEnabled(false);
 		mainGUI.btnShowHideFormula.setEnabled(false);

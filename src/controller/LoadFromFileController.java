@@ -64,7 +64,7 @@ public class LoadFromFileController extends BaseController{
 		model.setDataset(new Dataset());
 		model.graphName = ICommonProperties.cartesian;
 		mainGUI.rdbtnCartesianPlot.setSelected(true);
-		DefaultListModel<String> listModel = (DefaultListModel<String>)mainGUI.list.getModel();
+		DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
 		listModel.removeAllElements();
 	}
 	
@@ -74,7 +74,7 @@ public class LoadFromFileController extends BaseController{
     	if(validatePoint(s[0], s[1])){
     		Point p = new Point(Double.parseDouble(s[0]), Double.parseDouble(s[1]));
 			((Dataset) model.getDataset()).addPoint(p);
-        	DefaultListModel<String> listModel = (DefaultListModel<String>)mainGUI.list.getModel();
+        	DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
         	listModel.addElement(p.toString());
     	}
 	}

@@ -35,7 +35,7 @@ public class EditOkController extends BaseController{
 		IDataSet iDataSet = model.getDataset();
 		boolean updatePointResult = ((Dataset)iDataSet).updatePoint(mainGUI.list.getSelectedIndex(), p);
 		if(updatePointResult){
-			DefaultListModel<String> listModel = (DefaultListModel<String>)mainGUI.list.getModel();
+			DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
 			listModel.set(mainGUI.list.getSelectedIndex(), p.toString());
 			addEditPointGUI.dispose();
 		}
