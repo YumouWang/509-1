@@ -31,8 +31,8 @@ public class RemovePointController extends BaseController{
 		
 		if(ICommonProperties.cartesian.equals(model.graphName)){
 			if(model.getDataset().size() == 1){
-				model.properties.setProperty(ICommonProperties.trendLineVisible, "false");
-				model.properties.setProperty(ICommonProperties.trendLineEquationVisible, "false");
+				model.properties.setProperty(ICommonProperties.trendLineVisible, Boolean.FALSE.toString());
+				model.properties.setProperty(ICommonProperties.trendLineEquationVisible, Boolean.FALSE.toString());
 				mainGUI.btnShowHideFormula.setEnabled(false);
 				mainGUI.btnShowHideTrendLine.setEnabled(false);
 			}

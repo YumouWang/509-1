@@ -5,7 +5,7 @@
 		<item value="658" key="DIALOG_X_ORIGIN"/>
 	</section>
 	<section name="ExternalProjectImportWizard">
-		<item value="false" key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
-		<item value="false" key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
+		<item value=Boolean.FALSE.toString() key="WizardProjectsImportPage.STORE_ARCHIVE_SELECTED"/>
+		<item value=Boolean.FALSE.toString() key="WizardProjectsImportPage.STORE_COPY_PROJECT_ID"/>
 	</section>
 </section>

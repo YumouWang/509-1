@@ -19,10 +19,10 @@ public class ShowHideTrendLineEquationController extends BaseController {
 		if (Boolean.parseBoolean(model.properties
 				.getProperty(ICommonProperties.trendLineEquationVisible))) {
 			model.properties.setProperty(
-					ICommonProperties.trendLineEquationVisible, "false");
+					ICommonProperties.trendLineEquationVisible, Boolean.FALSE.toString());
 		} else {
 			model.properties.setProperty(
-					ICommonProperties.trendLineEquationVisible, "true");
+					ICommonProperties.trendLineEquationVisible, Boolean.TRUE.toString());
 		}
 		mainGUI.graphPanel.repaint();
 		return true;

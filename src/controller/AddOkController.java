@@ -46,8 +46,8 @@ public class AddOkController extends BaseController{
 		if(ICommonProperties.cartesian.equals(model.graphName)){
 			if(model.getDataset().size() <= 2){
 				
-				model.properties.setProperty(ICommonProperties.trendLineVisible, "false");
-				model.properties.setProperty(ICommonProperties.trendLineEquationVisible, "false");
+				model.properties.setProperty(ICommonProperties.trendLineVisible, Boolean.FALSE.toString());
+				model.properties.setProperty(ICommonProperties.trendLineEquationVisible, Boolean.FALSE.toString());
 				
 				mainGUI.btnShowHideFormula.setEnabled(false);
 				mainGUI.btnShowHideTrendLine.setEnabled(false);

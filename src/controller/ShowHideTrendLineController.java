@@ -17,12 +17,12 @@ public class ShowHideTrendLineController extends BaseController {
 	public boolean act() {
 		//CartesianPlot graph = (CartesianPlot)model.getGraph();
 		if(Boolean.parseBoolean(model.properties.getProperty(ICommonProperties.trendLineVisible))){
-			model.properties.setProperty(ICommonProperties.trendLineVisible, "false");
-			model.properties.setProperty(ICommonProperties.trendLineEquationVisible, "false");
+			model.properties.setProperty(ICommonProperties.trendLineVisible, Boolean.FALSE.toString());
+			model.properties.setProperty(ICommonProperties.trendLineEquationVisible, Boolean.FALSE.toString());
 			mainGUI.btnShowHideFormula.setEnabled(false);
 		}else{
-			model.properties.setProperty(ICommonProperties.trendLineVisible, "true");
-			model.properties.setProperty(ICommonProperties.trendLineEquationVisible, "true");
+			model.properties.setProperty(ICommonProperties.trendLineVisible, Boolean.TRUE.toString());
+			model.properties.setProperty(ICommonProperties.trendLineEquationVisible, Boolean.TRUE.toString());
 			mainGUI.btnShowHideFormula.setEnabled(true);
 		}
 		mainGUI.graphPanel.repaint();

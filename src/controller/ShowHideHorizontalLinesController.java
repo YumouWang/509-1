@@ -16,9 +16,9 @@ public class ShowHideHorizontalLinesController extends BaseController {
 	@Override
 	public boolean act() {
 		if(Boolean.parseBoolean(model.properties.getProperty(ICommonProperties.horizontalLines))){
-			model.properties.setProperty(ICommonProperties.horizontalLines, "False");
+			model.properties.setProperty(ICommonProperties.horizontalLines, Boolean.FALSE.toString());
 		}else{
-			model.properties.setProperty(ICommonProperties.horizontalLines, "True");
+			model.properties.setProperty(ICommonProperties.horizontalLines, Boolean.TRUE.toString());
 		}
 		mainGUI.graphPanel.repaint();
 		return true;
