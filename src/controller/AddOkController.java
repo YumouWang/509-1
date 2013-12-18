@@ -2,7 +2,7 @@ package controller;
 
 import javax.swing.DefaultListModel;
 
-import model.Dataset;
+import model.DataSet;
 import model.Model;
 import model.Point;
 import view.AddEditPointGUI;
@@ -33,8 +33,8 @@ public class AddOkController extends BaseController{
 		
 		Point p = new Point(Double.parseDouble(addEditPointGUI.getTextField_x().getText()), Double.parseDouble(addEditPointGUI.getTextField_y().getText()));
 		
-		IDataSet iDataSet = model.getDataset();
-		boolean addPointResult = ((Dataset)iDataSet).addPoint(p);
+		IDataSet iDataSet = model.getDataSet();
+		boolean addPointResult = ((DataSet)iDataSet).addPoint(p);
 		if(addPointResult){
 			DefaultListModel listModel = (DefaultListModel)this.mainGUI.list.getModel();
 			listModel.addElement(p.toString());
@@ -44,14 +44,14 @@ public class AddOkController extends BaseController{
 		}
 		
 		if(ICommonProperties.cartesian.equals(model.graphName)){
-			if(model.getDataset().size() <= 2){
+			if(model.getDataSet().size() <= 2){
 				
 				model.properties.setProperty(ICommonProperties.trendLineVisible, Boolean.FALSE.toString());
 				model.properties.setProperty(ICommonProperties.trendLineEquationVisible, Boolean.FALSE.toString());
 				
 				mainGUI.btnShowHideFormula.setEnabled(false);
 				mainGUI.btnShowHideTrendLine.setEnabled(false);
-				if(model.getDataset().size() == 2){
+				if(model.getDataSet().size() == 2){
 					mainGUI.btnShowHideTrendLine.setEnabled(true);
 				}
 			}

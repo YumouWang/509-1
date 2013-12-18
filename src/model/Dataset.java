@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import dataset.IDataSet;
 
-public class Dataset implements IDataSet{
+public class DataSet implements IDataSet{
 	ArrayList<Point> points;
 	public static final int MAXNumOfPoints = 2048;
 	double maxX;
@@ -13,13 +13,13 @@ public class Dataset implements IDataSet{
 	double minX;
 	double minY;
 
-	public Dataset(){
+	public DataSet(){
 		points = new ArrayList<Point>();
 	}
 	
 	void calculateBounds(){
 		double maxx = -Double.MAX_VALUE;
-		double maxy = -Double.MIN_VALUE;
+		double maxy = -Double.MAX_VALUE;
 		double minx = Double.MAX_VALUE;
 		double miny = Double.MAX_VALUE;
 		Iterator<Point> iter = points.iterator();
@@ -45,7 +45,6 @@ public class Dataset implements IDataSet{
 		minX = minx;
 		minY = miny;
 	}
-	
 	
 	public boolean addPoint(Point p){
 		if(points.size() > MAXNumOfPoints)
@@ -73,8 +72,9 @@ public class Dataset implements IDataSet{
 		return true;
 	}
 	
-	public ArrayList<Point> getPoints() {
-		return points;
+	// used for test
+	Point getNth(int i){
+		return this.points.get(i);
 	}
 
 	public double getMaxX() {
@@ -91,11 +91,6 @@ public class Dataset implements IDataSet{
 
 	public double getMinY() {
 		return minY;
-	}
-	
-	// used for test
-	Point getNth(int i){
-		return this.points.get(i);
 	}
 	
 	public int size(){

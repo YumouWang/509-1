@@ -36,7 +36,7 @@ public class SwitchGraphController extends BaseController{
 			if(button.isSelected()){
 				if(button == mainGUI.rdbtnCartesianPlot && !(ICommonProperties.cartesian.equals(model.graphName))){
 					model.graphName = ICommonProperties.cartesian;
-					if(model.getDataset().size() <= 1){
+					if(model.getDataSet().size() <= 1){
 						mainGUI.btnShowHideTrendLine.setEnabled(false);
 					}else{
 						mainGUI.btnShowHideTrendLine.setEnabled(true);

@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
@@ -30,6 +31,8 @@ public class ApplicationProperties {
 				applicationProperties.properties.setProperty(ICommonProperties.horizontalLines, Boolean.FALSE.toString());
 				applicationProperties.properties.setProperty(ICommonProperties.xAxisLabel, Boolean.FALSE.toString());
 				applicationProperties.properties.setProperty(ICommonProperties.yAxisLabel, Boolean.FALSE.toString());
+				applicationProperties.properties.setProperty(ICommonProperties.color1, Color.red.getRed() + "," + Color.red.getGreen() + "," + Color.red.getBlue());
+				applicationProperties.properties.setProperty(ICommonProperties.color1, Color.blue.getRed() + "," + Color.blue.getGreen() + "," + Color.blue.getBlue());
 			}catch(Exception e){
 				e.printStackTrace();
 			}

@@ -38,7 +38,7 @@ public class GraphPanel extends JPanel {
 			}
 			
 			IGraph graph = (IGraph)clazz.newInstance();
-			graph.setDataSet(model.getDataset());
+			graph.setDataSet(model.getDataSet());
 			graph.setProperties(properties);
 			graph.draw(g, this);
 		}catch(Exception e){

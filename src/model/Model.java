@@ -11,7 +11,7 @@ public class Model {
 	
 	private static Model model;
 	
-	public IDataSet dataset;
+	public IDataSet dataSet;
 	public Properties properties;
 	public String graphName;
 	
@@ -21,7 +21,7 @@ public class Model {
 	public static Model getInstance(){
 		if(model == null){
 			model = new Model();
-			model.dataset = new Dataset();
+			model.dataSet = new DataSet();
 			model.properties = ApplicationProperties.getInstance().properties;
 			File f = new File("./application.properties");
 			try{
@@ -34,12 +34,12 @@ public class Model {
 		return model;
 	}
 	
-	public IDataSet getDataset() {
-		return dataset;
+	public IDataSet getDataSet() {
+		return dataSet;
 	}
 	
-	public void setDataset(Dataset dataset){
-		this.dataset = dataset;
+	public void setDataset(DataSet dataSet){
+		this.dataSet = dataSet;
 	}
 
 }

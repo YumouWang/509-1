@@ -6,7 +6,7 @@ import java.io.FileReader;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 
-import model.Dataset;
+import model.DataSet;
 import model.Model;
 import model.Point;
 import view.MainGUI;
@@ -50,7 +50,7 @@ public class LoadFromFileController extends BaseController{
 	
 	// clear all the format
 	void clearFormat(){
-        if(model.getDataset().size() >= 2){
+        if(model.getDataSet().size() >= 2){
         	mainGUI.btnShowHideTrendLine.setEnabled(true);
         } else {
         	mainGUI.btnShowHideTrendLine.setEnabled(false);
@@ -61,7 +61,7 @@ public class LoadFromFileController extends BaseController{
 	
 	// clear all points
 	void clearPoints(){
-		model.setDataset(new Dataset());
+		model.setDataset(new DataSet());
 		model.graphName = ICommonProperties.cartesian;
 		mainGUI.rdbtnCartesianPlot.setSelected(true);
 		DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
@@ -73,7 +73,7 @@ public class LoadFromFileController extends BaseController{
 		String[] s = str.split(",");
     	if(validatePoint(s[0], s[1])){
     		Point p = new Point(Double.parseDouble(s[0]), Double.parseDouble(s[1]));
-			((Dataset) model.getDataset()).addPoint(p);
+			((DataSet) model.getDataSet()).addPoint(p);
         	DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
         	listModel.addElement(p.toString());
     	}

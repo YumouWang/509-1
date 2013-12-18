@@ -3,7 +3,7 @@ package controller;
 import javax.swing.DefaultListModel;
 
 import view.MainGUI;
-import model.Dataset;
+import model.DataSet;
 import model.Model;
 
 public class CreateNewDatasetController extends BaseController {
@@ -17,7 +17,7 @@ public class CreateNewDatasetController extends BaseController {
 
 	@Override
 	public boolean act() {
-		model.setDataset(new Dataset());
+		model.setDataset(new DataSet());
 		DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
 		listModel.removeAllElements();
 		mainGUI.btnShowHideTrendLine.setEnabled(false);
