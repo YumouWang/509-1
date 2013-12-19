@@ -25,14 +25,16 @@ public class RemovePointController extends BaseController{
 		if(removeResult){ // remove the selected point in JList
 			DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
 			listModel.removeElementAt(mainGUI.list.getSelectedIndex());
+			if(model.getDataSet().size() < 2){
+				model.properties.setProperty(ICommonProperties.trendLineVisible, Boolean.FALSE.toString());
+				model.properties.setProperty(ICommonProperties.trendLineEquationVisible, Boolean.FALSE.toString());
+			}
 		}else{
 			return false;
 		}
 		
-		if(ICommonProperties.cartesian.equals(model.graphName)){
-			if(model.getDataSet().size() == 1){
-				model.properties.setProperty(ICommonProperties.trendLineVisible, Boolean.FALSE.toString());
-				model.properties.setProperty(ICommonProperties.trendLineEquationVisible, Boolean.FALSE.toString());
+		if(ICommonProperties.cartesian.equals(model.getGraphName())){
+			if(model.getDataSet().size() < 2){
 				mainGUI.btnShowHideFormula.setEnabled(false);
 				mainGUI.btnShowHideTrendLine.setEnabled(false);
 			}

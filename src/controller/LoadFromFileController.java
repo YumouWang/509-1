@@ -61,8 +61,8 @@ public class LoadFromFileController extends BaseController{
 	
 	// clear all points
 	void clearPoints(){
-		model.setDataset(new DataSet());
-		model.graphName = ICommonProperties.cartesian;
+		model.clearDataset();
+		model.setGraph(ICommonProperties.cartesian);
 		mainGUI.rdbtnCartesianPlot.setSelected(true);
 		DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
 		listModel.removeAllElements();

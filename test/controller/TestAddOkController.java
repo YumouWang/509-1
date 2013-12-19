@@ -2,6 +2,7 @@ package controller;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import model.DataSet;
 import model.Model;
 
 import org.junit.Before;
@@ -43,10 +44,12 @@ public class TestAddOkController {
 		controller.mainGUI.graphPanel.setVisible(true);
 		assertTrue(controller.act());
 		
+		DataSet dataset = (DataSet)m.getDataSet();
+		
 		// judge if the point is already added into the dataset
-		int size = m.getDataset().getPoints().size();
-		assertTrue(m.getDataset().getPoints().get(size - 1).getX() == 1); 
-		assertTrue(m.getDataset().getPoints().get(size - 1).getY() == 2); 
+		int size = dataset.size();
+		assertTrue(dataset.getCoordinate(size - 1, 0) == 1); 
+		assertTrue(dataset.getCoordinate(size - 1, 1) == 2); 
 	}
 	
 	@Test
@@ -54,11 +57,12 @@ public class TestAddOkController {
 		addEditPointGUI.getTextField_x().setText("1");
 		addEditPointGUI.getTextField_y().setText("2b");
 
-		int size = m.getDataset().getPoints().size();
+		DataSet dataset = (DataSet)m.getDataSet();
+		int size = dataset.size();
 		assertFalse(controller.act());
 		
 		// judge if the point is already added into the dataset
-		assertTrue(m.getDataset().getPoints().size() == size); 
+		assertTrue(dataset.size() == size); 
 	}
 	
 	

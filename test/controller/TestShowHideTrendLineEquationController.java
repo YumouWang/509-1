@@ -12,49 +12,45 @@ import org.junit.Test;
 import view.MainGUI;
 import dataset.ICommonProperties;
 
-public class TestShowHideTrendLineController {
+public class TestShowHideTrendLineEquationController {
 
-	
 	Model m;
 	MainGUI mainGUI;
-	ShowHideTrendLineController controller;
-	
+	ShowHideTrendLineEquationController controller;
 	@Before
 	public void setUp() throws Exception {
 		this.m = new Model();
 		this.mainGUI = new MainGUI(m);
-		this.controller = new ShowHideTrendLineController(m, mainGUI);
+		this.controller = new ShowHideTrendLineEquationController(m, mainGUI);
 		mainGUI.setVisible(true);
 	}
-		
+	
 	@After
 	public void tearDown(){
 		mainGUI.dispose();
 	}
 	
+		
 	@Test
-	public void testShowTrendLine() {
+	public void testShowEquation() {
+		m.setGraph(ICommonProperties.cartesian);
 		DataSet dataset = (DataSet)m.dataSet;
 		Point p1 = new Point(1, 2);
 		Point p2 = new Point(-1, -2);
 		dataset.addPoint(p1);
 		dataset.addPoint(p2);
 		
-		m.setGraph(ICommonProperties.cartesian);
-		
-		m.properties.setProperty(ICommonProperties.trendLineVisible, Boolean.FALSE.toString());
+		ShowHideTrendLineEquationController controller = new ShowHideTrendLineEquationController(m, mainGUI);
+		m.properties.setProperty(ICommonProperties.trendLineVisible, Boolean.TRUE.toString());
 		m.properties.setProperty(ICommonProperties.trendLineEquationVisible, Boolean.FALSE.toString());
-
+		
+		
 		assertTrue(controller.act());
-		
-		
-		assertTrue(Boolean.TRUE.toString().equals(m.properties.getProperty(ICommonProperties.trendLineVisible)));
 		assertTrue(Boolean.TRUE.toString().equals(m.properties.getProperty(ICommonProperties.trendLineEquationVisible)));
-		
 	}
 	
 	@Test
-	public void testHideTrendLine() {
+	public void testHideEquation() {
 		DataSet dataset = (DataSet)m.dataSet;
 		Point p1 = new Point(1, 2);
 		Point p2 = new Point(-1, -2);
@@ -62,13 +58,10 @@ public class TestShowHideTrendLineController {
 		dataset.addPoint(p2);
 
 		m.setGraph(ICommonProperties.cartesian);
-
 		m.properties.setProperty(ICommonProperties.trendLineVisible, Boolean.TRUE.toString());
 		m.properties.setProperty(ICommonProperties.trendLineEquationVisible, Boolean.TRUE.toString());
 		
 		assertTrue(controller.act());
-		assertTrue(Boolean.FALSE.toString().equals(m.properties.getProperty(ICommonProperties.trendLineVisible)));
 		assertTrue(Boolean.FALSE.toString().equals(m.properties.getProperty(ICommonProperties.trendLineEquationVisible)));
-		
 	}
 }

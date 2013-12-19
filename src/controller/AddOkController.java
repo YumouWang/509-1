@@ -43,7 +43,7 @@ public class AddOkController extends BaseController{
 			return false;
 		}
 		
-		if(ICommonProperties.cartesian.equals(model.graphName)){
+		if(ICommonProperties.cartesian.equals(model.getGraphName())){
 			if(model.getDataSet().size() <= 2){
 				
 				model.properties.setProperty(ICommonProperties.trendLineVisible, Boolean.FALSE.toString());

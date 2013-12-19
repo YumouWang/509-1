@@ -1,6 +1,7 @@
 package controller;
 
 import static org.junit.Assert.assertTrue;
+import model.DataSet;
 import model.Model;
 import model.Point;
 
@@ -27,12 +28,14 @@ public class TestCreateNewDatasetController {
 		Point p1 = new Point(1, 2);
 		Point p2 = new Point(2, 3);
 		
-		m.getDataset().addPoint(p1);
-		m.getDataset().addPoint(p2);
+		DataSet dataset = (DataSet)m.getDataSet();
+		dataset.addPoint(p1);
+		dataset.addPoint(p2);
 
 		assertTrue(controller.act());
 		
-		assertTrue(m.getDataset().getPoints().size() == 0);
+		dataset = (DataSet)m.getDataSet();
+		assertTrue(dataset.size() == 0);
 	}
 
 }

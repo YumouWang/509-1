@@ -1,16 +1,17 @@
 package model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
 import org.junit.Test;
 
 public class TestDataset {
-	Dataset dataset;
+	DataSet dataset;
 	
 	@Before
 	public void setUp() throws Exception {
-		this.dataset = new Dataset();
+		this.dataset = new DataSet();
 	}
 	
 	@Test
@@ -46,7 +47,6 @@ public class TestDataset {
 		assertTrue(dataset.removePoint(dataset.size() - 1));
 		assertTrue(dataset.size() == 0);
 		assertFalse(dataset.removePoint(-1));
-		assertFalse(dataset.removePoint(Dataset.MAXNumOfPoints));
 	}
 
 

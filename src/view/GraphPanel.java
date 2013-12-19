@@ -26,14 +26,14 @@ public class GraphPanel extends JPanel {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		try{
-			Class clazz = null;
-			if(ICommonProperties.cartesian.equals(model.graphName)){
+			Class<?> clazz = null;
+			if(ICommonProperties.cartesian.equals(model.getGraphName())){
 				clazz = Class.forName(this.properties.getProperty(ICommonProperties.cartesian));
-			}else if(ICommonProperties.column.equals(model.graphName)){
+			}else if(ICommonProperties.column.equals(model.getGraphName())){
 				clazz = Class.forName(this.properties.getProperty(ICommonProperties.column));
-			}else if(ICommonProperties.horizontalBarGraph.equals(model.graphName)){
+			}else if(ICommonProperties.horizontalBarGraph.equals(model.getGraphName())){
 				clazz = Class.forName(this.properties.getProperty(ICommonProperties.horizontalBarGraph));
-			}else if(ICommonProperties.multipleLines.equals(model.graphName)){
+			}else if(ICommonProperties.multipleLines.equals(model.getGraphName())){
 				clazz = Class.forName(this.properties.getProperty(ICommonProperties.multipleLines));
 			}
 			

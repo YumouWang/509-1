@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import javax.swing.DefaultListModel;
 
+import model.DataSet;
 import model.Model;
 import model.Point;
 
@@ -33,11 +34,10 @@ public class TestEditOkController {
 
 		DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
 		Point p = new Point(1, 2);
-		m.getDataset().addPoint(p);
-		listModel.add(0, p.toString());
 		
-		int size = m.getDataset().getPoints().size();
-		assertTrue(m.getDataset().getPoints().get((size - 1)) == p);
+		DataSet dataset = (DataSet)m.dataSet;
+		dataset.addPoint(p);
+		listModel.add(0, p.toString());
 		
 		mainGUI.list.setSelectedIndex(0);
 		
@@ -45,19 +45,19 @@ public class TestEditOkController {
 		addEditPointGUI.getTextField_y().setText("6");
 		assertTrue(controller.act());
 		
-		assertTrue(m.getDataset().getPoints().get(size - 1).getX() == 5);
-		assertTrue(m.getDataset().getPoints().get(size - 1).getY() == 6);
+		assertTrue(dataset.getCoordinate(dataset.size() - 1, 0) == 5);
+		assertTrue(dataset.getCoordinate(dataset.size() - 1, 1) == 6);
 	}
 	
 	@Test
 	public void testActFailure() {
 		DefaultListModel listModel = (DefaultListModel)mainGUI.list.getModel();
-		Point p = new Point(1, 2);
-		m.getDataset().addPoint(p);
-		listModel.add(0, p.toString());
 		
-		int size = m.getDataset().getPoints().size();
-		assertTrue(m.getDataset().getPoints().get((size - 1)) == p);
+		DataSet dataset = (DataSet)m.dataSet;
+		Point p = new Point(1, 2);
+		
+		dataset.addPoint(p);
+		listModel.add(0, p.toString());
 		
 		EditOkController controller = new EditOkController(m, addEditPointGUI);
 		mainGUI.list.setSelectedIndex(0);
@@ -66,8 +66,8 @@ public class TestEditOkController {
 		addEditPointGUI.getTextField_y().setText("5");
 		assertFalse(controller.act());
 		
-		assertTrue(m.getDataset().getPoints().get(size - 1).getX() == 1);
-		assertTrue(m.getDataset().getPoints().get(size - 1).getY() == 2);
+		assertTrue(dataset.getCoordinate(dataset.size() - 1, 0) == 1);
+		assertTrue(dataset.getCoordinate(dataset.size() - 1, 1) == 2);	
 	}
 	
 	@Test

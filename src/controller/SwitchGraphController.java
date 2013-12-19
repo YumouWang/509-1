@@ -34,24 +34,24 @@ public class SwitchGraphController extends BaseController{
 		while(enu.hasMoreElements()){
 			JRadioButton button = (JRadioButton)enu.nextElement();
 			if(button.isSelected()){
-				if(button == mainGUI.rdbtnCartesianPlot && !(ICommonProperties.cartesian.equals(model.graphName))){
-					model.graphName = ICommonProperties.cartesian;
+				if(button == mainGUI.rdbtnCartesianPlot && !(ICommonProperties.cartesian.equals(model.getGraphName()))){
+					model.setGraph(ICommonProperties.cartesian);
 					if(model.getDataSet().size() <= 1){
 						mainGUI.btnShowHideTrendLine.setEnabled(false);
 					}else{
 						mainGUI.btnShowHideTrendLine.setEnabled(true);
 					}
 					mainGUI.btnShowHideFormula.setEnabled(false);
-				}else if(button == mainGUI.rdbtnColumnChart && !(ICommonProperties.column.equals(model.graphName))){
-					model.graphName = ICommonProperties.column;
+				}else if(button == mainGUI.rdbtnColumnGraph && !(ICommonProperties.column.equals(model.getGraphName()))){
+					model.setGraph(ICommonProperties.column);
 					mainGUI.btnShowHideFormula.setEnabled(false);
 					mainGUI.btnShowHideTrendLine.setEnabled(false);
-				}else if(button == mainGUI.rdbtnHorizontalBarGraph && !(ICommonProperties.horizontalBarGraph.equals(model.graphName))){
-					model.graphName = ICommonProperties.horizontalBarGraph;
+				}else if(button == mainGUI.rdbtnHorizontalBarGraph && !(ICommonProperties.horizontalBarGraph.equals(model.getGraphName()))){
+					model.setGraph(ICommonProperties.horizontalBarGraph);
 					mainGUI.btnShowHideFormula.setEnabled(false);
 					mainGUI.btnShowHideTrendLine.setEnabled(false);
-				}else if(button == mainGUI.rdbtnMultiplelines && !(ICommonProperties.multipleLines.equals(model.graphName))){
-					model.graphName = ICommonProperties.multipleLines;
+				}else if(button == mainGUI.rdbtnMultipleLines && !(ICommonProperties.multipleLines.equals(model.getGraphName()))){
+					model.setGraph(ICommonProperties.multipleLines);
 					mainGUI.btnShowHideFormula.setEnabled(false);
 					mainGUI.btnShowHideTrendLine.setEnabled(false);
 				}
