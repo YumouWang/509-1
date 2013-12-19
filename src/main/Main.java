@@ -9,7 +9,7 @@ public class Main {
 	 * main entry
 	 */
 	public static void main(String[] args) {
-		Model model = Model.getInstance();
+		Model model = new Model();
 		MainGUI gui = new MainGUI(model);
 		gui.setVisible(true);
 	}
