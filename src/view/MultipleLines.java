@@ -192,10 +192,10 @@ public class MultipleLines implements IGraph {
 			int a = i + 1;
 			int centerXOfPoints = (int) Math.round(this.originX
 					+ (a / this.numericUnitX) * this.xCursorUnit);
-			int centerYOfXPoint = (int) (this.originY - (this.iDataSet
+			int centerYOfXPoint = (int) Math.round(this.originY - (this.iDataSet
 					.getCoordinate(i, 0) / this.numericUnitY)
 					* this.yCursorUnit);
-			int centerYOfYPoint = (int) (this.originY - (this.iDataSet
+			int centerYOfYPoint = (int) Math.round(this.originY - (this.iDataSet
 					.getCoordinate(i, 1) / this.numericUnitY)
 					* this.yCursorUnit);
 			g.setColor(new Color(0, 0, 255));
@@ -253,7 +253,7 @@ public class MultipleLines implements IGraph {
 	}
 
 	void drawHorizontalLines(Graphics g, JPanel panel) {
-		g.setColor(new Color(0, 0, 0, 20));
+		g.setColor(new Color(0, 0, 0, 50));
 		if (this.isHorizontalLinesVisible) {
 			for (int i = (int) Math.round(this.minYOnG / this.numericUnitY); i <= Math
 					.round(this.maxYOnG / this.numericUnitY); i++) {

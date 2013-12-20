@@ -49,10 +49,7 @@ public class CartesianPlot implements IGraph {
 		drawPoints(g, panel);
 		drawAxisLabel(g, panel);
 		drawHorizontalLines(g, panel);
-		if (this.iDataSet.size() >= 2) {
-			calculateTrendLineEquation();
-			drawTrendLineAndFormula(g, panel);
-		}
+		drawTrendLineAndFormula(g, panel);
 	}
 
 	public void setProperties(Properties p) {
@@ -302,7 +299,7 @@ public class CartesianPlot implements IGraph {
 	}
 
 	void drawHorizontalLines(Graphics g, JPanel panel) {
-		g.setColor(new Color(0, 0, 0, 20));
+		g.setColor(new Color(0, 0, 0, 50));
 		if (this.isHorizontalLinesVisible) {
 			for (int i = (int) Math.round(this.minYOnG / this.numericUnitY); i <= Math
 					.round(this.maxYOnG / this.numericUnitY); i++) {
@@ -314,6 +311,7 @@ public class CartesianPlot implements IGraph {
 
 	void drawTrendLineAndFormula(Graphics g, JPanel panel) {
 		if (this.isTrendLineVisible) {
+			calculateTrendLineEquation();
 			if (Double.isNaN(this.slope)) {
 				Font font = g.getFont();
 				font.deriveFont(20);
@@ -392,5 +390,4 @@ public class CartesianPlot implements IGraph {
 			}
 		}
 	}
-
 }

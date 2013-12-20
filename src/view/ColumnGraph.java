@@ -186,20 +186,22 @@ public class ColumnGraph implements IGraph {
 	void drawStripes(Graphics g, JPanel panel) {
 		for (int i = 0; i < this.iDataSet.size(); i++) {
 			int a = i + 1;
-			int centerXOfStripes = (int) Math.round(this.originX + (a / this.numericUnitX)
-					* this.xCursorUnit);
-			int upperBoundOfXStripe = (int) Math.round(this.originY - (this.iDataSet
-					.getCoordinate(i, 0) / this.numericUnitY)
+			int centerXOfStripes = (int) Math.round(this.originX
+					+ (a / this.numericUnitX) * this.xCursorUnit);
+			int upperBoundOfXStripe = (int) Math.round(this.originY
+					- (this.iDataSet.getCoordinate(i, 0) / this.numericUnitY)
 					* this.yCursorUnit);
-			int upperBoundOfYStripe = (int) Math.round(this.originY - (this.iDataSet
-					.getCoordinate(i, 1) / this.numericUnitY)
+			int upperBoundOfYStripe = (int) Math.round(this.originY
+					- (this.iDataSet.getCoordinate(i, 1) / this.numericUnitY)
 					* this.yCursorUnit);
 			g.setColor(new Color(0, 0, 255));
-			g.fillRect(centerXOfStripes - 3, this.originY, 3,
-					upperBoundOfXStripe - this.originY);
+			g.fillRect(centerXOfStripes - 3,
+					Math.min(upperBoundOfXStripe, this.originY), 3,
+					Math.abs(this.originY - upperBoundOfXStripe));
 			g.setColor(new Color(255, 0, 0));
-			g.fillRect(centerXOfStripes + 1, this.originY, 3,
-					upperBoundOfYStripe - this.originY);
+			g.fillRect(centerXOfStripes + 1,
+					Math.min(upperBoundOfYStripe, this.originY), 3,
+					Math.abs(this.originY - upperBoundOfYStripe));
 		}
 	}
 
@@ -240,7 +242,7 @@ public class ColumnGraph implements IGraph {
 	}
 
 	void drawHorizontalLines(Graphics g, JPanel panel) {
-		g.setColor(new Color(0, 0, 0, 20));
+		g.setColor(new Color(0, 0, 0, 50));
 		if (this.isHorizontalLinesVisible) {
 			for (int i = (int) Math.round(this.minYOnG / this.numericUnitY); i <= Math.round(this.maxYOnG / this.numericUnitY); i++) {
 				g.drawLine(0, this.originY - this.yCursorUnit * i,
